@@ -69,11 +69,13 @@ modded class PlayerBase extends ManBase{
 			{
 				case KapMod.KAP_REMOTE_ADD_INVENTORY:
 					Param1<string> p = new Param1<string>("");
+					PlayerBase player = GetGame().GetPlayer();
 					if (ctx.Read(p))
 					{
-						if(GetGame().IsServer())
+						string p_ID = p.param2;
+						if(GetGame().IsServer() && GetGame().GetPlayer().GetIdentity().GetId() == p_ID)
 						{
-							GetGame().GetPlayer().GetInventory().CreateInInventory(p.param1);
+							player.GetInventory().CreateInInventory(p.param1);
 						}	
 					}
 				break;

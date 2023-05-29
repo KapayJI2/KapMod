@@ -33,6 +33,9 @@ modded class ChatInputMenu extends UIScriptedMenu {
 				//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
 				//Param5<string, float, float, bool> params = new Param4<string, float, float, bool>(text, 100, 1, false);
 				//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
+				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
+				Param params = new Param2<string, string>(text, p_ID);
+				GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true);
 		};
 		};
 		return true;
