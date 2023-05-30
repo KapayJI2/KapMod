@@ -1,5 +1,5 @@
 // Script File
-class ResponseFromBack
+/*class ResponseFromBack
 {
     array<string> items;
 	string id;
@@ -62,3 +62,4 @@ void AddItemTo(string item){
 	PlayerBase player = GetGame().GetPlayer();
 	player.GetInventory().CreateInInventory(item);
 };
+*/

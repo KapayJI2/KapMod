@@ -1,10 +1,10 @@
 modded class PlayerBase extends ManBase{
-	const int		KAP_REMOTE_ADD_INVENTORY		= 60901;
-	const int		KAP_GET_PLAYER		= 60902;
-    Megaphone item;
-    PlayerBase player;
-	static PlayerBase s_player;
-	static string s_item;
+	//const int		KAP_REMOTE_ADD_INVENTORY		= 60901;
+	//const int		KAP_GET_PLAYER		= 60902;
+    //Megaphone item;
+    //PlayerBase player;
+	//static PlayerBase s_player;
+	//static string s_item;
     override void OnConnect(){
         super.OnConnect();
         //item = this.GetInventory().CreateInInventory("Megaphone");
@@ -18,9 +18,9 @@ modded class PlayerBase extends ManBase{
 		GetGame().CreateObject("Mag_P1_8Rnd", this.GetPosition());
 		GetGame().CreateObject("MGT_MilitaryCase", this.GetPosition());
 		*/
-		if(GetGame().IsServer()){
-			PlayerBase.s_player = this;
-		}
+		//if(GetGame().IsServer()){
+			//PlayerBase.s_player = this;
+		//}
 		Print("CONN: " + this);
 		Print("SRV_ID: " + GetGame().GetPlayer().GetIdentity().GetId());
 		Print("SRV_IDENTITY: " + GetGame().GetPlayer().GetIdentity());
@@ -37,11 +37,11 @@ modded class PlayerBase extends ManBase{
     //    GetGame().GameScript.CallFunction(player, "OnPlayerVomitForce", NULL, 0);
     //};
     //принудительно вызываем рвоту
-    void OnPlayerVomitForce(){
-        player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);
-    };
+    //void OnPlayerVomitForce(){
+       // player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);
+    //};
     //принудительно вызываем кашель(проверочная)
-    void OnPlayerCoughForce(){
+   /* void OnPlayerCoughForce(){
         player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_COUGH);
     };
 	static void AddItems(){
@@ -59,30 +59,57 @@ modded class PlayerBase extends ManBase{
 			Print("SRV: " + GetGame().GetPlayer());
 		}
 	};
+	*/
 			// override OnRPC function
 		override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
 		{
 			// dont forget to propagate this call trough class hierarchy!
-			super.OnRPC(sender, rpc_type, ctx);
-
+			
+			Print("THIS");
+			Print(rpc_type);
+			Print(rpc_type == KapMod.KAP_REMOTE_ADD_INVENTORY);
 			switch(rpc_type)
 			{
 				case KapMod.KAP_REMOTE_ADD_INVENTORY:
-					Param1<string> p = new Param1<string>("");
-					PlayerBase player = GetGame().GetPlayer();
+					Param<string> p;
+					Print("CASE_IN");
 					if (ctx.Read(p))
 					{
-						string p_ID = p.param2;
-						if(GetGame().IsServer() && GetGame().GetPlayer().GetIdentity().GetId() == p_ID)
+				
+						//string p_ID = p.param2;
+						///
+						/*array<Man> players1 = new array<Man>();
+							GetGame().GetPlayers(players1);
+							PlayerBase player1;
+							for(int t = 0; t < players1.Count(); t++){
+								if(players1.Get(t).GetIdentity().GetId() == p.param2){
+									player1 = PlayerBase.Cast(players1.Get(t));
+									player1.GetInventory().CreateInInventory(p.param1);
+									GetCEApi().SpawnDE("StaticHeliCrash", player1.GetPosition());
+								};
+							};*/
+						///
+						//Print("ID: " + p_ID);
+						/*if(GetGame().IsServer())
 						{
-							player.GetInventory().CreateInInventory(p.param1);
-						}	
-					}
+							array<Man> players = new array<Man>();
+							GetGame().GetPlayers(players);
+							PlayerBase player;
+							for(int k = 0; k < players.Count(); k++){
+								if(players.Get(k).GetIdentity().GetId() == p.param2){
+									player = PlayerBase.Cast(players.Get(k));
+									player.GetInventory().CreateInInventory(p.param1);
+									GetCEApi().SpawnDE("StaticHeliCrash", player.GetPosition());
+								};
+							};
+						};*/	
+					};
 				break;
-			}
+			};
+			super.OnRPC(sender, rpc_type, ctx);
 		}
 };
 
 
-void main(){
-};
+//void main(){
+//};
