@@ -1,4 +1,4 @@
-modded class PlayerBase extends ManBase{
+modded class PlayerBase{
 	//const int		KAP_REMOTE_ADD_INVENTORY		= 60901;
 	//const int		KAP_GET_PLAYER		= 60902;
     //Megaphone item;
@@ -64,14 +64,14 @@ modded class PlayerBase extends ManBase{
 		override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
 		{
 			// dont forget to propagate this call trough class hierarchy!
-			
+			Print(GetGame().IsServer());
 			Print("THIS");
 			Print(rpc_type);
 			Print(rpc_type == KapMod.KAP_REMOTE_ADD_INVENTORY);
 			switch(rpc_type)
 			{
 				case KapMod.KAP_REMOTE_ADD_INVENTORY:
-					Param<string> p;
+					Param2<string, string> p = new Param2<string, string>("","");
 					Print("CASE_IN");
 					if (ctx.Read(p))
 					{
@@ -90,7 +90,7 @@ modded class PlayerBase extends ManBase{
 							};*/
 						///
 						//Print("ID: " + p_ID);
-						/*if(GetGame().IsServer())
+						if(GetGame().IsServer())
 						{
 							array<Man> players = new array<Man>();
 							GetGame().GetPlayers(players);
@@ -102,7 +102,7 @@ modded class PlayerBase extends ManBase{
 									GetCEApi().SpawnDE("StaticHeliCrash", player.GetPosition());
 								};
 							};
-						};*/	
+						};	
 					};
 				break;
 			};
