@@ -1,36 +1,47 @@
 class CfgPatches
 {
-	class Kap_Mod
+	class kap_mod
 	{
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 0.1;
-		requiredAddons[] = {};
+		requiredAddons[]=
+		{
+			"DZ_Data",
+			"DZ_Characters"
+		};
 	};
 };
 class CfgMods
 {
-	class FirstMod
+	class KapMod
 	{
 		type = "mod";
-
+		name = "KapMod";
+		dir = "kap_mod";
+		dependencies[]=
+		{
+			"Game",
+			"World",
+			"Mission"
+		};
 		class defs
 		{
 
 			class gameScriptModule
 			{
 				value = "";
-				files[] = {"FirstMod/Kap_Mod/3_Game"};
+				files[] = {"KapMod/kap_mod/3_Game"};
 			};
 			class worldScriptModule
 			{
 				value = "";
-				files[] = {"FirstMod/Kap_Mod/4_World"};
+				files[] = {"KapMod/kap_mod/4_World"};
 			};
 			class missionScriptModule
 			{
 				value = "";
-				files[] = {"FirstMod/Kap_Mod/5_Mission"};
+				files[] = {"KapMod/kap_mod/5_Mission"};
 			};
 		};
 	};

@@ -1,4 +1,4 @@
-modded class PlayerBase{
+modded class PlayerBase extends ManBase{
 	//const int		KAP_REMOTE_ADD_INVENTORY		= 60901;
 	//const int		KAP_GET_PLAYER		= 60902;
     //Megaphone item;
@@ -6,6 +6,10 @@ modded class PlayerBase{
 	//static PlayerBase s_player;
 	//static string s_item;
     override void OnConnect(){
+		Debug.Log("[DEBUD_LOG] KapMod_Connect");
+		Print("CONN: " + this);
+		Print("SRV_ID: " + GetGame().GetPlayer().GetIdentity().GetId());
+		Print("SRV_IDENTITY: " + GetGame().GetPlayer().GetIdentity());
         super.OnConnect();
         //item = this.GetInventory().CreateInInventory("Megaphone");
         //замыкаем объект
@@ -20,10 +24,7 @@ modded class PlayerBase{
 		*/
 		//if(GetGame().IsServer()){
 			//PlayerBase.s_player = this;
-		//}
-		Print("CONN: " + this);
-		Print("SRV_ID: " + GetGame().GetPlayer().GetIdentity().GetId());
-		Print("SRV_IDENTITY: " + GetGame().GetPlayer().GetIdentity());
+		//}		
         //item = GetGame().CreateObject("Megaphone", player.GetPosition());
         //item.GetInventory().CreateInInventory("Battery9V");
         //player.GetSymptomManager().QueueUpPrimarySymptom(SymptomIDs.SYMPTOM_VOMIT);
@@ -64,10 +65,7 @@ modded class PlayerBase{
 		override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
 		{
 			// dont forget to propagate this call trough class hierarchy!
-			Print(GetGame().IsServer());
-			Print("THIS");
-			Print(rpc_type);
-			Print(rpc_type == KapMod.KAP_REMOTE_ADD_INVENTORY);
+			Debug.Log("[DEBUD_LOG] KapMod_RPC");
 			switch(rpc_type)
 			{
 				case KapMod.KAP_REMOTE_ADD_INVENTORY:
