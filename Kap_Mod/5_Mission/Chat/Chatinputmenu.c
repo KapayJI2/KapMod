@@ -9,7 +9,16 @@ modded class ChatInputMenu extends UIScriptedMenu {
 		if (finished){
 			if (text != "")
 				{
+				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
+					if(text.IndexOf("/spawn") != -1){
+						
+						Debug.Log("[DEBUD_LOG] Kap_Mod Chat NEAR");
+						text.Replace("/spawn ", "");
+						Param params = new Param2<string, string>(text, p_ID);
+						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_NEAR, params, true, GetGame().GetPlayer().GetIdentity());
+					}else{
 					Print("TXT: " + text);		
+					//GetGame().ExecuteEnforceScript --------------------------!
 					PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
 							//Print(player.GetPosition());
 							//player.AddItem(text);
@@ -29,12 +38,11 @@ modded class ChatInputMenu extends UIScriptedMenu {
 							//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
 							//Param5<string, float, float, bool> params = new Param4<string, float, float, bool>(text, 100, 1, false);
 							//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
-					string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
-					Debug.Log("[DEBUD_LOG] Kap_Mod Chat");
-					Param params = new Param2<string, string>(text, p_ID);
+					Debug.Log("[DEBUD_LOG] Kap_Mod Chat INV");
+					Param params1 = new Param2<string, string>(text, p_ID);
 					//Param params = new Param1<string>(text);
 					Print(KapMod.KAP_REMOTE_ADD_INVENTORY);
-					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true, GetGame().GetPlayer().GetIdentity());
+					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params1, true, GetGame().GetPlayer().GetIdentity());
 					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true);
 					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, false, GetGame().GetPlayer().GetIdentity());
 					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, false);
@@ -48,6 +56,7 @@ modded class ChatInputMenu extends UIScriptedMenu {
 					//GetGame().RPC(null, KapMod.KAP_REMOTE_ADD_INVENTORY, a_p, true, GetGame().GetPlayer().GetIdentity());
 					//GetCEApi().SpawnDE("StaticHeliCrash", player.GetPosition());
 				};
+			};
 			
 			
 			};

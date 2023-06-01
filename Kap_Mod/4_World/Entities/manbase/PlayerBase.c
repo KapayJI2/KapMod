@@ -69,6 +69,7 @@ modded class PlayerBase extends ManBase{
 			switch(rpc_type)
 			{
 				case KapMod.KAP_REMOTE_ADD_INVENTORY:
+				{
 					Param2<string, string> p = new Param2<string, string>("","");
 					Print("CASE_IN");
 					if (ctx.Read(p))
@@ -103,6 +104,29 @@ modded class PlayerBase extends ManBase{
 						};	
 					};
 				break;
+				}
+				case KapMod.KAP_REMOTE_ADD_NEAR:
+				{
+					Param2<string, string> p1 = new Param2<string, string>("","");
+					Print("CASE_IN");
+					if (ctx.Read(p1))
+					{
+				
+						if(GetGame().IsServer())
+						{
+							array<Man> players1 = new array<Man>();
+							GetGame().GetPlayers(players1);
+							PlayerBase player1;
+							for(int t = 0; t < players1.Count(); t++){
+								if(players1.Get(t).GetIdentity().GetId() == p1.param2){
+									player1 = PlayerBase.Cast(players1.Get(t));
+									GetGame().CreateObject(p1.param1, player1.GetPosition());
+								};
+							};
+						};	
+					};
+				break;
+				}
 			};
 			super.OnRPC(sender, rpc_type, ctx);
 		}
