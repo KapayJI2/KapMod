@@ -66,72 +66,45 @@ modded class PlayerBase extends ManBase{
 		{
 			// dont forget to propagate this call trough class hierarchy!
 			Debug.Log("[DEBUD_LOG] KapMod_RPC");
+			if(GetGame().IsServer())
+						{
+							Param2<string, string> p = new Param2<string, string>("","");
+							array<Man> players = new array<Man>();
+							GetGame().GetPlayers(players);
+							PlayerBase player;
+								if (ctx.Read(p))
+					{
+				for(int k = 0; k < players.Count(); k++){
+								if(players.Get(k).GetIdentity().GetId() == p.param2){
 			switch(rpc_type)
 			{
 				case KapMod.KAP_REMOTE_ADD_INVENTORY:
 				{
-					Param2<string, string> p = new Param2<string, string>("","");
-					Print("CASE_IN");
-					if (ctx.Read(p))
-					{
-				
-						//string p_ID = p.param2;
-						///
-						/*array<Man> players1 = new array<Man>();
-							GetGame().GetPlayers(players1);
-							PlayerBase player1;
-							for(int t = 0; t < players1.Count(); t++){
-								if(players1.Get(t).GetIdentity().GetId() == p.param2){
-									player1 = PlayerBase.Cast(players1.Get(t));
-									player1.GetInventory().CreateInInventory(p.param1);
-									GetCEApi().SpawnDE("StaticHeliCrash", player1.GetPosition());
-								};
-							};*/
-						///
-						//Print("ID: " + p_ID);
-						if(GetGame().IsServer())
-						{
-							array<Man> players = new array<Man>();
-							GetGame().GetPlayers(players);
-							PlayerBase player;
-							for(int k = 0; k < players.Count(); k++){
-								if(players.Get(k).GetIdentity().GetId() == p.param2){
 									player = PlayerBase.Cast(players.Get(k));
 									player.GetInventory().CreateInInventory(p.param1);
-									GetCEApi().SpawnDE("StaticHeliCrash", player.GetPosition());
-								};
-							};
-						};	
-					};
 				break;
 				}
 				case KapMod.KAP_REMOTE_ADD_NEAR:
 				{
-					Param2<string, string> p1 = new Param2<string, string>("","");
-					Print("CASE_IN");
-					if (ctx.Read(p1))
-					{
-				
-						if(GetGame().IsServer())
-						{
-							array<Man> players1 = new array<Man>();
-							GetGame().GetPlayers(players1);
-							PlayerBase player1;
-							for(int t = 0; t < players1.Count(); t++){
-								if(players1.Get(t).GetIdentity().GetId() == p1.param2){
-									player1 = PlayerBase.Cast(players1.Get(t));
-									GetGame().CreateObject(p1.param1, player1.GetPosition());
-								};
-							};
-						};	
-					};
+									player = PlayerBase.Cast(players.Get(k));
+									GetGame().CreateObject(p.param1, player.GetPosition());
+				break;
+							}
+				case KapMod.KAP_REMOTE_TELEPORT:
+				{
+									player = PlayerBase.Cast(players.Get(k));
+									player.SetPosition(p.param2.ToVector());
 				break;
 				}
+						};
+					};
+		};
+			};
 			};
 			super.OnRPC(sender, rpc_type, ctx);
 		}
 };
 
 
-//void main(){
-//};
+void main(){
+};

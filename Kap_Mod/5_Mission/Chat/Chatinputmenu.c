@@ -10,12 +10,19 @@ modded class ChatInputMenu extends UIScriptedMenu {
 			if (text != "")
 				{
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
-					if(text.IndexOf("/spawn") != -1){
-						
+				Param params = new Param2<string, string>(text, p_ID);
+				if(text == "/pos"){
+					string pos = GetGame().GetPlayer().GetPosition().ToString();
+					text.Replace("/pos", pos);
+				}else if(text.IndexOf("/spawn") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat NEAR");
 						text.Replace("/spawn ", "");
-						Param params = new Param2<string, string>(text, p_ID);
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_NEAR, params, true, GetGame().GetPlayer().GetIdentity());
+					}else if(text.IndexOf("/tp") != -1){
+						Debug.Log("[DEBUD_LOG] Kap_Mod Chat TELEPORT");
+						text.Replace("/tp ", "");
+						//text.Replace(","," ");
+						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TELEPORT, params, true, GetGame().GetPlayer().GetIdentity());
 					}else{
 					Print("TXT: " + text);		
 					//GetGame().ExecuteEnforceScript --------------------------!
@@ -39,10 +46,9 @@ modded class ChatInputMenu extends UIScriptedMenu {
 							//Param5<string, float, float, bool> params = new Param4<string, float, float, bool>(text, 100, 1, false);
 							//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
 					Debug.Log("[DEBUD_LOG] Kap_Mod Chat INV");
-					Param params1 = new Param2<string, string>(text, p_ID);
 					//Param params = new Param1<string>(text);
 					Print(KapMod.KAP_REMOTE_ADD_INVENTORY);
-					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params1, true, GetGame().GetPlayer().GetIdentity());
+					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true, GetGame().GetPlayer().GetIdentity());
 					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true);
 					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, false, GetGame().GetPlayer().GetIdentity());
 					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, false);
