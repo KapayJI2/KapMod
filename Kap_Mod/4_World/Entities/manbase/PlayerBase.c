@@ -85,15 +85,30 @@ modded class PlayerBase extends ManBase{
 				break;
 				}
 				case KapMod.KAP_REMOTE_ADD_NEAR:
-				{
+				{				
+								string spawned = p.param1;
+								spawned.Replace("/spawn ", "");
+								Print("NEAR: " + spawned);
 									player = PlayerBase.Cast(players.Get(k));
-									GetGame().CreateObject(p.param1, player.GetPosition());
+									
+									GetGame().CreateObject(spawned, player.GetPosition());
 				break;
 							}
 				case KapMod.KAP_REMOTE_TELEPORT:
-				{
+				{					
+								string str = p.param1;
+								TStringArray teleport_pos = new TStringArray;
+								str.Replace("/tp ","");
+								str.Replace(" ","");
+								str.Split(",", teleport_pos);
+								Print("PARAM2: " + teleport_pos);
 									player = PlayerBase.Cast(players.Get(k));
-									player.SetPosition(p.param2.ToVector());
+									player.SetPosition(Vector(teleport_pos[0].ToFloat(),teleport_pos[1].ToFloat(),teleport_pos[2].ToFloat()));
+				break;
+				}
+				case KapMod.KAP_REMOTE_HEAL:
+				{
+									players.Get(k).RemoveAllAgents();
 				break;
 				}
 						};

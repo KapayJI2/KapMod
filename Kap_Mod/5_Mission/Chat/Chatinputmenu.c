@@ -2,7 +2,6 @@
 modded class ChatInputMenu extends UIScriptedMenu {	
 	override bool OnChange(Widget w, int x, int y, bool finished)
 	{
-		super.OnChange(w, x, y, finished);
 				if (!finished) return false;
 		
 		string text = m_edit_box.GetText();
@@ -11,17 +10,17 @@ modded class ChatInputMenu extends UIScriptedMenu {
 				{
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
 				Param params = new Param2<string, string>(text, p_ID);
-				if(text == "/pos"){
+				if(text == "/heal"){
+						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_HEAL, params, true, GetGame().GetPlayer().GetIdentity());
+				}else if(text == "/pos"){
 					string pos = GetGame().GetPlayer().GetPosition().ToString();
 					text.Replace("/pos", pos);
+					Print("TXT: " + text);
 				}else if(text.IndexOf("/spawn") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat NEAR");
-						text.Replace("/spawn ", "");
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_NEAR, params, true, GetGame().GetPlayer().GetIdentity());
 					}else if(text.IndexOf("/tp") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat TELEPORT");
-						text.Replace("/tp ", "");
-						//text.Replace(","," ");
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TELEPORT, params, true, GetGame().GetPlayer().GetIdentity());
 					}else{
 					Print("TXT: " + text);		
@@ -66,6 +65,7 @@ modded class ChatInputMenu extends UIScriptedMenu {
 			
 			
 			};
+		super.OnChange(w, x, y, finished);
 		return true;
 		};
 		
