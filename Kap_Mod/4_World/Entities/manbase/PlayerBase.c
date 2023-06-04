@@ -102,8 +102,11 @@ modded class PlayerBase extends ManBase{
 								str.Replace(" ","");
 								str.Split(",", teleport_pos);
 								Print("PARAM2: " + teleport_pos);
-									player = PlayerBase.Cast(players.Get(k));
-									player.SetPosition(Vector(teleport_pos[0].ToFloat(),teleport_pos[1].ToFloat(),teleport_pos[2].ToFloat()));
+								Print(GetGame().SurfaceY(teleport_pos[0].ToFloat(),teleport_pos[1].ToFloat()));
+								float posX = teleport_pos[0].ToFloat();
+								float posY = teleport_pos[1].ToFloat();
+								float posZ = GetGame().SurfaceY(posX, posY);
+									players.Get(k).SetPosition(Vector(posX, posZ, posY));
 				break;
 				}
 				case KapMod.KAP_REMOTE_HEAL:
@@ -121,5 +124,5 @@ modded class PlayerBase extends ManBase{
 };
 
 
-void main(){
-};
+//void main(){
+//};
