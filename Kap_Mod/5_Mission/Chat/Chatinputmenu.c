@@ -10,7 +10,19 @@ modded class ChatInputMenu extends UIScriptedMenu {
 				{
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
 				Param params = new Param2<string, string>(text, p_ID);
-				if(text == "/heal"){
+				if(text.IndexOf("/goto") != -1){
+						TStringArray str_arr = new TStringArray;
+						text.Split(" ", str_arr);
+						MyRestCallback m_cb = new MyRestCallback;
+						string url_to = "http://localhost:3000/teleport/pos-move/";
+						RestContext ctx_to = GetRestApi().GetRestContext(url_to);
+						ctx_to.GET(m_cb,p_ID + "/" + str_arr[1]);
+				}else if(text == "/rndtp"){
+						MyRestCallback m_cb_rand = new MyRestCallback;
+						string url = "http://localhost:3000/teleport/rand-move/";
+						RestContext ctx = GetRestApi().GetRestContext(url);
+						ctx.GET(m_cb_rand,p_ID);
+				}else if(text == "/heal"){
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_HEAL, params, true, GetGame().GetPlayer().GetIdentity());
 				}else if(text == "/pos"){
 					string pos = GetGame().GetPlayer().GetPosition().ToString();
@@ -21,7 +33,7 @@ modded class ChatInputMenu extends UIScriptedMenu {
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_NEAR, params, true, GetGame().GetPlayer().GetIdentity());
 					}else if(text.IndexOf("/tp") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat TELEPORT");
-						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TELEPORT, params, true, GetGame().GetPlayer().GetIdentity());
+						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TELEPORT_CHAT, params, true, GetGame().GetPlayer().GetIdentity());
 					}else{
 					Print("TXT: " + text);		
 					//GetGame().ExecuteEnforceScript --------------------------!

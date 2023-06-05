@@ -94,7 +94,7 @@ modded class PlayerBase extends ManBase{
 									GetGame().CreateObject(spawned, player.GetPosition());
 				break;
 							}
-				case KapMod.KAP_REMOTE_TELEPORT:
+				case KapMod.KAP_REMOTE_TELEPORT_CHAT:
 				{					
 								string str = p.param1;
 								TStringArray teleport_pos = new TStringArray;
@@ -105,8 +105,22 @@ modded class PlayerBase extends ManBase{
 								Print(GetGame().SurfaceY(teleport_pos[0].ToFloat(),teleport_pos[1].ToFloat()));
 								float posX = teleport_pos[0].ToFloat();
 								float posY = teleport_pos[1].ToFloat();
-								float posZ = GetGame().SurfaceY(posX, posY);
+								float posZ = GetGame().SurfaceY(posX, posY) + 0.1;
 									players.Get(k).SetPosition(Vector(posX, posZ, posY));
+				break;
+				}
+				case KapMod.KAP_REMOTE_TELEPORT:
+				{					
+								string str1 = p.param1;
+								TStringArray coord_pos = new TStringArray;
+								str1.Replace(" ","");
+								str1.Split(",", coord_pos);
+								Print("PARAM2: " + coord_pos);
+								//Print(GetGame().SurfaceY(coord_pos[0].ToFloat(),coord_pos[1].ToFloat()));
+								float pos_X = coord_pos[0].ToFloat();
+								float pos_Y = coord_pos[1].ToFloat();
+								float pos_Z = GetGame().SurfaceY(pos_X, pos_Y) + 0.1;
+									players.Get(k).SetPosition(Vector(pos_X, pos_Z, pos_Y));
 				break;
 				}
 				case KapMod.KAP_REMOTE_HEAL:
@@ -124,5 +138,5 @@ modded class PlayerBase extends ManBase{
 };
 
 
-//void main(){
-//};
+void main(){
+};
