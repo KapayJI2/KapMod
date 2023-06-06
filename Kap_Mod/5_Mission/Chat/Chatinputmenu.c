@@ -28,6 +28,8 @@ modded class ChatInputMenu extends UIScriptedMenu {
 					string pos = GetGame().GetPlayer().GetPosition().ToString();
 					text.Replace("/pos", pos);
 					Print("TXT: " + text);
+					GetGame().RPCSingleParam(GetGame().GetPlayer(), ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>(GetGame().GetPlayer().GetPosition().ToString()),true, GetGame().GetPlayer().GetIdentity());
+					GetGame().RPCSingleParam(ManBase.Cast(GetGame().GetPlayer()), ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("MAN: " + GetGame().GetPlayer().GetPosition().ToString()),true, GetGame().GetPlayer().GetIdentity());
 				}else if(text.IndexOf("/spawn") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat NEAR");
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_NEAR, params, true, GetGame().GetPlayer().GetIdentity());

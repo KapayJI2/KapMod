@@ -61,12 +61,12 @@ class KapTrigger: Trigger{
 
     override void OnEnter(Object obj){
 		Object obj2;
-		Print("CAST: " + Man.CastTo(obj2, obj));
-		if(Man.CastTo(obj2, obj)){
+		Print("CAST: " + PlayerBase.CastTo(obj2, obj));
+		if(PlayerBase.CastTo(obj2, obj)){
 			Print("PLR: " + PlayerBase.Cast(obj2));
-			Man man = Man.Cast(obj2);
+			PlayerBase man = PlayerBase.Cast(obj2);
 			Print("MAN: " + man);
-			GetGame().RPCSingleParam(man, ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("Вы в зоне триггера"),true, man.GetIdentity());
+			GetGame().RPCSingleParam(man, ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("Вы в зоне триггера"),true, ManBase.Cast(obj2).GetIdentity());
 			string p_ID = man.GetIdentity().GetId();
 			Print("ID: " + p_ID);
 			MyRestCallback m_cb_rand = new MyRestCallback;
