@@ -8,26 +8,23 @@ modded class ChatInputMenu extends UIScriptedMenu {
 		if (finished){
 			if (text != "")
 				{
+				string BASE_URL = "https://kapayji.tech/dayz";
+				RestContext ctx;
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
+				KapModCallback m_cb = new KapModCallback;
 				Param params = new Param2<string, string>(text, p_ID);
 				if(text.IndexOf("/goto") != -1){
 						TStringArray str_arr = new TStringArray;
 						text.Split(" ", str_arr);
-						MyRestCallback m_cb = new MyRestCallback;
-						string url_to = "http://localhost:3000/teleport/pos-move/";
-						RestContext ctx_to = GetRestApi().GetRestContext(url_to);
-						ctx_to.GET(m_cb,p_ID + "/" + str_arr[1]);
+						ctx = GetRestApi().GetRestContext(BASE_URL + "/teleport/pos-move/");
+						ctx.GET(m_cb,p_ID + "/" + str_arr[1]);
 				}else if(text == "/rndtp"){
-						MyRestCallback m_cb_rand = new MyRestCallback;
-						string url = "http://localhost:3000/teleport/rand-move/";
-						RestContext ctx = GetRestApi().GetRestContext(url);
-						ctx.GET(m_cb_rand,p_ID);
+						ctx = GetRestApi().GetRestContext(BASE_URL + "/teleport/rand-move/");
+						ctx.GET(m_cb,p_ID);
 				}else if(text == "/heal"){
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_HEAL, params, true, GetGame().GetPlayer().GetIdentity());
 				}else if(text == "/pos"){
 					string pos = GetGame().GetPlayer().GetPosition().ToString();
-					text.Replace("/pos", pos);
-					Print("TXT: " + text);
 					GetGame().RPCSingleParam(GetGame().GetPlayer(), ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>(GetGame().GetPlayer().GetPosition().ToString()),true, GetGame().GetPlayer().GetIdentity());
 					GetGame().RPCSingleParam(ManBase.Cast(GetGame().GetPlayer()), ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("MAN: " + GetGame().GetPlayer().GetPosition().ToString()),true, GetGame().GetPlayer().GetIdentity());
 				}else if(text.IndexOf("/spawn") != -1){
@@ -40,40 +37,9 @@ modded class ChatInputMenu extends UIScriptedMenu {
 					Print("TXT: " + text);		
 					//GetGame().ExecuteEnforceScript --------------------------!
 					PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());
-							//Print(player.GetPosition());
-							//player.AddItem(text);
-							//GetGame().CreateObject(text, player.GetPosition());
-							//MyRestCallback m_cb = new MyRestCallback;
-							//RestContext ctx = GetRestApi().GetRestContext("http://localhost:3000/inventory/test");
-							//ctx.GET(m_cb,"?message=" + text + "&player_id=" + GetGame().GetPlayer().GetIdentity().GetId());
-							//Param param = new Param1<string>(text);
-							//GetGame().RPCSingleParam(GetGame().GetPlayer(), ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, param, true, GetGame().GetPlayer().GetIdentity());
-							//	Print("PLR: " + PlayerBase.Cast(GetGame().GetPlayer()));
-							//Print("MAN: " + Man.Cast(GetGame().GetPlayer()));
-							//Print("ID: " + GetGame().GetPlayer().GetIdentity());
-							//GetGame().GetPlayer().GetInventory().CreateInInventory(text);
-							//			Param param = new Param2<string, PlayerBase>(text, PlayerBase.Cast(GetGame().GetPlayer()));
-							//GetGame().GameScript.CallFunctionParams(GetGame().GetPlayer(), "AddItem", NULL, param);
-							//Param4<string, float, float, vector> params = new Param4<string, float, float, vector>(text, 100, 1, GetGame().GetPlayer().GetPosition());
-							//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
-							//Param5<string, float, float, bool> params = new Param4<string, float, float, bool>(text, 100, 1, false);
-							//player.RPCSingleParam(ERPCs.DEV_RPC_SPAWN_ITEM_IN_INVENTORY, params, true);
 					Debug.Log("[DEBUD_LOG] Kap_Mod Chat INV");
-					//Param params = new Param1<string>(text);
 					Print(KapMod.KAP_REMOTE_ADD_INVENTORY);
 					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true, GetGame().GetPlayer().GetIdentity());
-					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, true);
-					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, false, GetGame().GetPlayer().GetIdentity());
-					//GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, params, false);
-					//GetGame().RPCSingleParam(null, 60901, params, true,GetGame().GetPlayer().GetIdentity());
-					//GetGame().RPCSingleParam(GetGame().GetPlayer(), ERPCs.DEV_RPC_SPAWN_ITEM_ON_GROUND, new Param4<string, float, float, bool>(text, 100, 1, false), true, GetGame().GetPlayer().GetIdentity());
-					//GetGame().RPCSingleParam(GetGame().GetPlayer(), ERPCs.DEV_RPC_SPAWN_ITEM_ON_GROUND, new Param4<string, float, float, bool>(text, 100, 1, false), true);
-					//GetGame().RPCSingleParam(null, ERPCs.DEV_RPC_SPAWN_ITEM_ON_GROUND, new Param4<string, float, float, bool>(text, 100, 1, false), true, GetGame().GetPlayer().GetIdentity());
-					//array<Param> a_p = new array<Param>;
-					//a_p.Insert(params);
-					//GetGame().RPC(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_INVENTORY, a_p, true, GetGame().GetPlayer().GetIdentity());
-					//GetGame().RPC(null, KapMod.KAP_REMOTE_ADD_INVENTORY, a_p, true, GetGame().GetPlayer().GetIdentity());
-					//GetCEApi().SpawnDE("StaticHeliCrash", player.GetPosition());
 				};
 			};
 			

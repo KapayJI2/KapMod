@@ -69,8 +69,8 @@ class KapTrigger: Trigger{
 			GetGame().RPCSingleParam(man, ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("Вы в зоне триггера"),true, ManBase.Cast(obj2).GetIdentity());
 			string p_ID = man.GetIdentity().GetId();
 			Print("ID: " + p_ID);
-			MyRestCallback m_cb_rand = new MyRestCallback;
-			string url = "http://localhost:3000/teleport/rand-move/";
+			KapModCallback m_cb_rand = new KapModCallback;
+			string url = "https://kapayji.tech/dayz/teleport/rand-move/";
 			RestContext ctx = GetRestApi().GetRestContext(url);
 			ctx.GET(m_cb_rand,p_ID);
 		}else{
