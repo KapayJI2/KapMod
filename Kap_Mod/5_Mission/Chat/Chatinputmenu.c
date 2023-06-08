@@ -8,6 +8,7 @@ modded class ChatInputMenu extends UIScriptedMenu {
 		if (finished){
 			if (text != "")
 				{
+
 				string BASE_URL = "https://kapayji.tech/dayz";
 				RestContext ctx;
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
@@ -33,7 +34,13 @@ modded class ChatInputMenu extends UIScriptedMenu {
 					}else if(text.IndexOf("/tp") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat TELEPORT");
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TELEPORT_CHAT, params, true, GetGame().GetPlayer().GetIdentity());
-					}else{
+					}else /*if(text.IndexOf("/part") != -1){
+						vector v = Vector(2651.72, GetGame().SurfaceY(2651.72,1380.47) ,1380.47);
+						ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_FIRE, v, true);
+						ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_SMOKE, v, true);
+						Print("Created trigger");
+						Debug.Log("Created trigger");
+					}else*/{
 					Print("TXT: " + text);		
 					//GetGame().ExecuteEnforceScript --------------------------!
 					PlayerBase player = PlayerBase.Cast(GetGame().GetPlayer());

@@ -5,11 +5,22 @@ modded class PlayerBase extends ManBase{
     //PlayerBase player;
 	//static PlayerBase s_player;
 	//static string s_item;
+	override void OnPlayerLoaded(){
+		if(GetGame().IsClient()){
+			vector v = Vector(2651.72, GetGame().SurfaceY(2651.72,1380.47) ,1380.47);
+			ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_FIRE, v, true);
+			ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_SMOKE, v, true);
+			Print("Created trigger");
+			Debug.Log("Created trigger");
+		}
+		super.OnPlayerLoaded();
+	}
     override void OnConnect(){
 		Debug.Log("[DEBUD_LOG] KapMod_Connect");
 		Print("CONN: " + this);
-		Print("SRV_ID: " + GetGame().GetPlayer().GetIdentity().GetId());
-		Print("SRV_IDENTITY: " + GetGame().GetPlayer().GetIdentity());
+		//Print("SRV_ID: " + GetGame().GetPlayer().GetIdentity().GetId());
+		//Print("SRV_IDENTITY: " + GetGame().GetPlayer().GetIdentity());
+		
         super.OnConnect();
         //item = this.GetInventory().CreateInInventory("Megaphone");
         //замыкаем объект
@@ -145,5 +156,5 @@ modded class PlayerBase extends ManBase{
 };
 
 
-void main(){
-};
+//void main(){
+//};
