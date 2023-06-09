@@ -13,7 +13,7 @@ class KapModCallback: RestCallback {
         Print(" !!! OnSuccess() size=" + dataSize );
 		Print("Success: " + GetGame().IsServer());
         if( dataSize > 0 ){
-            //Print(data); // !!! NOTE: Print() will not output string longer than 1024b, check your dataSize !!!
+            Print("DATA: " + data); // !!! NOTE: Print() will not output string longer than 1024b, check your dataSize !!!
             ResponseKapBack resp = new ResponseKapBack;
             string error;
             JsonSerializer js = new JsonSerializer();

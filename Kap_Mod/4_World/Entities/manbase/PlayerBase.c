@@ -7,11 +7,9 @@ modded class PlayerBase extends ManBase{
 	//static string s_item;
 	override void OnPlayerLoaded(){
 		if(GetGame().IsClient()){
-			vector v = Vector(2651.72, GetGame().SurfaceY(2651.72,1380.47) ,1380.47);
-			ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_FIRE, v, true);
-			ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_SMOKE, v, true);
-			Print("Created trigger");
-			Debug.Log("Created trigger");
+			KapModTriggerCallback kap_cta = new KapModTriggerCallback;
+			RestContext ctx = GetRestApi().GetRestContext("https://kapayji.tech/dayz/teleport/trigger-coords");
+			ctx.GET(kap_cta,"/");
 		}
 		super.OnPlayerLoaded();
 	}
@@ -138,6 +136,8 @@ modded class PlayerBase extends ManBase{
 								//PlayerBase.Cast(players.Get(k)).m_ShockHandler.SetShock(65);
 								DayZPlayerSyncJunctures.SendPlayerUnconsciousness(players.Get(k), true);
 								GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(PlayerBase.Cast(players.Get(k)).stop_unka, 3000, false, players.Get(k));
+								
+								
 				break;
 				}
 				case KapMod.KAP_REMOTE_HEAL:
@@ -156,5 +156,5 @@ modded class PlayerBase extends ManBase{
 };
 
 
-//void main(){
-//};
+void main(){
+};

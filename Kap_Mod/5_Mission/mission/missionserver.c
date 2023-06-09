@@ -4,10 +4,25 @@ modded class MissionServer extends MissionBase{
 	{
 		super.OnMissionStart();
 		if(GetGame().IsServer()){
-			vector v = Vector(2651.72, GetGame().SurfaceY(2651.72,1380.47) ,1380.47);
-			GetGame().CreateObjectEx("KapTrigger", v, ECE_SETUP);
-			Print("Created trigger");
-			Debug.Log("Created trigger");
+			ResponseTriggerApi rta = new ResponseTriggerApi;
+			RestContext ctx = GetRestApi().GetRestContext("https://kapayji.tech/dayz/teleport/trigger-coords");
+			string ctx_int = ctx.GET_now("/");
+			array<map<string, float>> arr_coords = new array<map<string, float>>();
+			string error;
+			JsonSerializer js = new JsonSerializer();
+			bool ok = js.ReadFromString(rta, ctx_int, error);
+			arr_coords = rta.coords;
+			for(int i = 0; i < arr_coords.Count(); i++){
+				float posX = arr_coords[i].Get("posX");
+				float posZ = arr_coords[i].Get("posZ");
+				vector v = Vector(posX,GetGame().SurfaceY(posX,posZ),posZ);
+				GetGame().CreateObjectEx("KapTrigger", v, ECE_SETUP);
+				Print("Created trigger");
+				Debug.Log("Created trigger");
+			}
+			if(error != ""){
+				Debug.Log("Error: " + error);
+			}
 		}
 	}
 }
