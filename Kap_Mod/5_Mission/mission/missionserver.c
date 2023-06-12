@@ -1,9 +1,13 @@
 // Script File
 modded class MissionServer extends MissionBase{
-	override void OnMissionStart()
+	override void OnInit()
 	{
-		super.OnMissionStart();
-		if(GetGame().IsServer()){
+		super.OnInit();
+		KapModTriggerCallback kap_cta = new KapModTriggerCallback;
+		RestContext ctx = GetRestApi().GetRestContext("https://kapayji.tech/dayz/teleport/trigger-coords");
+		ctx.GET(kap_cta,"/");
+		/*
+		#ifdef SERVER
 			ResponseTriggerApi rta = new ResponseTriggerApi;
 			RestContext ctx = GetRestApi().GetRestContext("https://kapayji.tech/dayz/teleport/trigger-coords");
 			string ctx_int = ctx.GET_now("/");
@@ -23,6 +27,7 @@ modded class MissionServer extends MissionBase{
 			if(error != ""){
 				Debug.Log("Error: " + error);
 			}
-		}
+		#endif
+		*/
 	}
 }

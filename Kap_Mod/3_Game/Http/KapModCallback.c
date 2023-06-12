@@ -35,8 +35,4 @@ class KapModCallback: RestCallback {
             Print("ERR: " + error);
     };
 	};
-	override void OnFileCreated( string fileName, int dataSize )
-	{
-		Print(" !!! OnFileCreated() file=" + fileName + " size=" + dataSize );
-	};
 };

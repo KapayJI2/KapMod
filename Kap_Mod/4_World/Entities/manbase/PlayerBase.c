@@ -78,8 +78,7 @@ modded class PlayerBase extends ManBase{
 		{
 			// dont forget to propagate this call trough class hierarchy!
 			Debug.Log("[DEBUD_LOG] KapMod_RPC");
-			if(GetGame().IsServer())
-						{
+			#ifdef SERVER
 							Param2<string, string> p = new Param2<string, string>("","");
 							array<Man> players = new array<Man>();
 							GetGame().GetPlayers(players);
@@ -88,69 +87,70 @@ modded class PlayerBase extends ManBase{
 					{
 				for(int k = 0; k < players.Count(); k++){
 								if(players.Get(k).GetIdentity().GetId() == p.param2){
-			switch(rpc_type)
-			{
-				case KapMod.KAP_REMOTE_ADD_INVENTORY:
-				{
-									player = PlayerBase.Cast(players.Get(k));
-									player.GetInventory().CreateInInventory(p.param1);
-				break;
-				}
-				case KapMod.KAP_REMOTE_ADD_NEAR:
-				{				
-								string spawned = p.param1;
-								spawned.Replace("spawn ", "");
-								Print("NEAR: " + spawned);
-									player = PlayerBase.Cast(players.Get(k));
-									
-									GetGame().CreateObject(spawned, player.GetPosition());
-				break;
-							}
-				case KapMod.KAP_REMOTE_TELEPORT_CHAT:
-				{					
-								string str = p.param1;
-								TStringArray teleport_pos = new TStringArray;
-								str.Replace("tp ","");
-								str.Replace(" ","");
-								str.Split(",", teleport_pos);
-								Print("PARAM2: " + teleport_pos);
-								Print(GetGame().SurfaceY(teleport_pos[0].ToFloat(),teleport_pos[1].ToFloat()));
-								float posX = teleport_pos[0].ToFloat();
-								float posY = teleport_pos[1].ToFloat();
-								float posZ = GetGame().SurfaceY(posX, posY) + 0.1;
-									players.Get(k).SetPosition(Vector(posX, posZ, posY));
-				break;
-				}
-				case KapMod.KAP_REMOTE_TELEPORT:
-				{					
-								string str1 = p.param1;
-								TStringArray coord_pos = new TStringArray;
-								str1.Replace(" ","");
-								str1.Split(",", coord_pos);
-								Print("PARAM2: " + coord_pos);
-								//Print(GetGame().SurfaceY(coord_pos[0].ToFloat(),coord_pos[1].ToFloat()));
-								float pos_X = coord_pos[0].ToFloat();
-								float pos_Y = coord_pos[1].ToFloat();
-								float pos_Z = GetGame().SurfaceY(pos_X, pos_Y) + 0.1;
-								players.Get(k).SetPosition(Vector(pos_X, pos_Z, pos_Y));
-								//PlayerBase.Cast(players.Get(k)).m_ShockHandler.SetShock(65);
-								DayZPlayerSyncJunctures.SendPlayerUnconsciousness(players.Get(k), true);
-								GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(PlayerBase.Cast(players.Get(k)).stop_unka, 3000, false, players.Get(k));
-								
-								
-				break;
-				}
-				case KapMod.KAP_REMOTE_HEAL:
-				{
-						PlayerBase.Cast(players.Get(k)).SetHealth(100);
-						players.Get(k).RemoveAllAgents();
-				break;
-				}
+					switch(rpc_type)
+					{
+						case KapMod.KAP_REMOTE_ADD_INVENTORY:
+						{
+											player = PlayerBase.Cast(players.Get(k));
+											player.GetInventory().CreateInInventory(p.param1);
+						break;
+						}
+						case KapMod.KAP_REMOTE_ADD_NEAR:
+						{				
+										string spawned = p.param1;
+										spawned.Replace("spawn ", "");
+										Print("NEAR: " + spawned);
+											player = PlayerBase.Cast(players.Get(k));
+											
+											GetGame().CreateObject(spawned, player.GetPosition());
+						break;
+						}
+						case KapMod.KAP_REMOTE_TELEPORT_CHAT:
+						{					
+										string str = p.param1;
+										TStringArray teleport_pos = new TStringArray;
+										str.Replace("tp ","");
+										str.Replace(" ","");
+										str.Split(",", teleport_pos);
+										Print("PARAM2: " + teleport_pos);
+										Print(GetGame().SurfaceY(teleport_pos[0].ToFloat(),teleport_pos[1].ToFloat()));
+										float posX = teleport_pos[0].ToFloat();
+										float posY = teleport_pos[1].ToFloat();
+										float posZ = GetGame().SurfaceY(posX, posY) + 0.1;
+											players.Get(k).SetPosition(Vector(posX, posZ, posY));
+						break;
+						}
+						case KapMod.KAP_REMOTE_TELEPORT:
+						{					
+										string str1 = p.param1;
+										TStringArray coord_pos = new TStringArray;
+										str1.Replace(" ","");
+										str1.Split(",", coord_pos);
+										Print("PARAM2: " + coord_pos);
+										//Print(GetGame().SurfaceY(coord_pos[0].ToFloat(),coord_pos[1].ToFloat()));
+										float pos_X = coord_pos[0].ToFloat();
+										float pos_Y = coord_pos[1].ToFloat();
+										float pos_Z = GetGame().SurfaceY(pos_X, pos_Y) + 0.1;
+										players.Get(k).SetPosition(Vector(pos_X, pos_Z, pos_Y));
+										//PlayerBase.Cast(players.Get(k)).m_ShockHandler.SetShock(65);
+										DayZPlayerSyncJunctures.SendPlayerUnconsciousness(players.Get(k), true);
+										GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(PlayerBase.Cast(players.Get(k)).stop_unka, 3000, false, players.Get(k));
+										
+										
+						break;
+						}
+						case KapMod.KAP_REMOTE_HEAL:
+						{
+								PlayerBase.Cast(players.Get(k)).SetHealth(100);
+								PlayerBase.Cast(players.Get(k)).SetBleedingBits(0);
+								players.Get(k).RemoveAllAgents();
+						break;
+						}
 						};
 					};
-		};
+				};
 			};
-			};
+			#endif
 			super.OnRPC(sender, rpc_type, ctx);
 		}
 };
