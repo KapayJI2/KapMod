@@ -99,7 +99,7 @@ modded class PlayerBase extends ManBase{
 				case KapMod.KAP_REMOTE_ADD_NEAR:
 				{				
 								string spawned = p.param1;
-								spawned.Replace("/spawn ", "");
+								spawned.Replace("spawn ", "");
 								Print("NEAR: " + spawned);
 									player = PlayerBase.Cast(players.Get(k));
 									
@@ -110,7 +110,7 @@ modded class PlayerBase extends ManBase{
 				{					
 								string str = p.param1;
 								TStringArray teleport_pos = new TStringArray;
-								str.Replace("/tp ","");
+								str.Replace("tp ","");
 								str.Replace(" ","");
 								str.Split(",", teleport_pos);
 								Print("PARAM2: " + teleport_pos);
