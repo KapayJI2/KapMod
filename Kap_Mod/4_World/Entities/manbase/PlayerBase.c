@@ -5,6 +5,22 @@ modded class PlayerBase extends ManBase{
     //PlayerBase player;
 	//static PlayerBase s_player;
 	//static string s_item;
+	protected bool isGodMode = false;
+	void GodModeEnable(){
+		this.isGodMode = true;
+	}
+	void GodModeDisable(){
+		this.isGodMode = false;
+	}
+	bool GodeModeStatus(){
+		return this.isGodMode;
+	}
+	override void EEHitBy(TotalDamageResult damageResult, int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos, float speedCoef)
+	{
+		if(!GodeModeStatus()){
+			super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
+		}
+	}
 	override void OnPlayerLoaded(){
 		if(GetGame().IsClient()){
 			KapModTriggerCallback kap_cta = new KapModTriggerCallback;
@@ -133,7 +149,7 @@ modded class PlayerBase extends ManBase{
 										float pos_Z = GetGame().SurfaceY(pos_X, pos_Y) + 0.1;
 										players.Get(k).SetPosition(Vector(pos_X, pos_Z, pos_Y));
 										//PlayerBase.Cast(players.Get(k)).m_ShockHandler.SetShock(65);
-										DayZPlayerSyncJunctures.SendPlayerUnconsciousness(players.Get(k), true);
+										DayZPlayerSyncJunctures.SendPlayerUnconsciousness(DayZPlayer.Cast(players.Get(k)), true);
 										GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(PlayerBase.Cast(players.Get(k)).stop_unka, 3000, false, players.Get(k));
 										
 										
@@ -142,7 +158,12 @@ modded class PlayerBase extends ManBase{
 						case KapMod.KAP_REMOTE_HEAL:
 						{
 								PlayerBase.Cast(players.Get(k)).SetHealth(100);
-								PlayerBase.Cast(players.Get(k)).SetBleedingBits(0);
+								PlayerBase.Cast(players.Get(k)).GetStatWater().Set(900);
+								PlayerBase.Cast(players.Get(k)).GetStatEnergy().Set(900);
+								for(int b_s = 0; b_s < 5; b_s++){
+									PlayerBase.Cast(players.Get(k)).GetBleedingManagerServer().RemoveMostSignificantBleedingSource();
+								}
+								PlayerBase.Cast(players.Get(k)).SetHealth("", "Blood", PlayerBase.Cast(players.Get(k)).GetMaxHealth("","Blood"));
 								players.Get(k).RemoveAllAgents();
 						break;
 						}

@@ -14,26 +14,39 @@ modded class ChatInputMenu extends UIScriptedMenu {
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
 				KapModCallback m_cb = new KapModCallback;
 				Param params = new Param2<string, string>(text, p_ID);
-				if(text.IndexOf("goto") != -1){
+				if(text.IndexOf("off") != -1){
+					PlayerBase.Cast(GetGame().GetPlayer()).GodModeDisable();
+					return true;
+				}else if(text.IndexOf("iddqd") != -1){
+					PlayerBase.Cast(GetGame().GetPlayer()).GodModeEnable();
+					return true;
+				}else if(text.IndexOf("goto") != -1){
 						TStringArray str_arr = new TStringArray;
 						text.Split(" ", str_arr);
 						ctx = GetRestApi().GetRestContext(BASE_URL + "/teleport/pos-move/");
 						ctx.GET(m_cb,p_ID + "/" + str_arr[1]);
+					return true;
 				}else if(text == "rndtp"){
 						ctx = GetRestApi().GetRestContext(BASE_URL + "/teleport/rand-move/");
 						ctx.GET(m_cb,p_ID);
+					return true;
 				}else if(text == "heal"){
+						PlayerBase.Cast(GetGame().GetPlayer()).SetBleedingBits(0);
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_HEAL, params, true, GetGame().GetPlayer().GetIdentity());
+					return true;
 				}else if(text == "pos"){
 					string pos = GetGame().GetPlayer().GetPosition().ToString();
 					GetGame().RPCSingleParam(GetGame().GetPlayer(), ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>(GetGame().GetPlayer().GetPosition().ToString()),true, GetGame().GetPlayer().GetIdentity());
 					GetGame().RPCSingleParam(ManBase.Cast(GetGame().GetPlayer()), ERPCs.RPC_USER_ACTION_MESSAGE, new Param1<string>("MAN: " + GetGame().GetPlayer().GetPosition().ToString()),true, GetGame().GetPlayer().GetIdentity());
+					return true;
 				}else if(text.IndexOf("spawn") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat NEAR");
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_ADD_NEAR, params, true, GetGame().GetPlayer().GetIdentity());
+					return true;
 					}else if(text.IndexOf("tp") != -1){
 						Debug.Log("[DEBUD_LOG] Kap_Mod Chat TELEPORT");
 						GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TELEPORT_CHAT, params, true, GetGame().GetPlayer().GetIdentity());
+					return true;
 					}else /*if(text.IndexOf("/part") != -1){
 						vector v = Vector(2651.72, GetGame().SurfaceY(2651.72,1380.47) ,1380.47);
 						ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_FIRE, v, true);
