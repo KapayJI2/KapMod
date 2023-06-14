@@ -33,6 +33,7 @@ class KapModTriggerCallback: RestCallback {
 				}
 				#ifdef SERVER
 					GetGame().CreateObjectEx("KapTrigger", v, ECE_SETUP);
+					GetGame().CreateObjectEx("KapTriggerWrapper", v, ECE_SETUP);
 					Print("[Kap_Mod] Created trigger num: " + i +", on pos: " + v);
 					Debug.Log("[Kap_Mod] Created trigger num: " + i +", on pos: " + v);
 				

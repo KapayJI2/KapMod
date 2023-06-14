@@ -46,3 +46,38 @@ class CfgMods
 		};
 	};
 };
+class CfgSoundShaders
+{
+	class KapTriggerSound_base
+	{
+		range=50;
+	};
+	class KapTriggerSoundShader: KapTriggerSound_base
+	{
+		samples[]=
+		{
+			
+			{
+				"KapMod/kap_mod/sounds/KapTriggerSoundSet.ogg",
+				1
+			}
+		};
+		volume=1;
+	};
+};
+class CfgSoundSets
+{
+	class kapTrigger_SoundSet
+	{
+		spatial=1;
+		doppler=0;
+		loop=0;
+	};
+	class kapTriggerSound_SoundSet: kapTrigger_SoundSet
+	{
+		soundShaders[]=
+		{
+			"KapTriggerSoundShader"
+		};
+	};
+};

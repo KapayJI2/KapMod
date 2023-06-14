@@ -80,3 +80,35 @@ class KapTrigger: Trigger{
 		Print("ENTER");
 	}
 }
+class KapTriggerWrapper: Trigger{
+    //protected KapTriggerParent kap_Parent;
+
+   // void SetParentObject( KapTriggerParent obj )
+	//{
+	//	kap_Parent = obj;
+	//}
+	override void EOnInit(IEntity other, int extra)
+	{
+		SetExtents("-12 -14 -12", "12 14 12");
+	}
+	override void OnLeave(Object obj) {
+		Object obj2;
+		if(PlayerBase.CastTo(obj2, obj)){
+			PlayerBase man = PlayerBase.Cast(obj2);
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).Remove(man.SpawnShockEffect);
+		}else{
+			Print("FALSE");
+		}
+		Print("ENTER");
+	}
+    override void OnEnter(Object obj){
+		Object obj2;
+		if(PlayerBase.CastTo(obj2, obj)){
+			PlayerBase man = PlayerBase.Cast(obj2);
+			GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(man.SpawnShockEffect, 2000, true, 70);
+		}else{
+			Print("FALSE");
+		}
+		Print("ENTER");
+	}
+}

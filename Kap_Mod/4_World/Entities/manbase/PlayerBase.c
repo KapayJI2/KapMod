@@ -21,6 +21,12 @@ modded class PlayerBase extends ManBase{
 			super.EEHitBy(damageResult, damageType, source, component, dmgZone, ammo, modelPos, speedCoef);
 		}
 	}
+	override void EEHitByRemote(int damageType, EntityAI source, int component, string dmgZone, string ammo, vector modelPos)
+	{
+		if(!GodeModeStatus()){
+			super.EEHitByRemote(damageType, source, component, dmgZone, ammo, modelPos);
+		}
+	}
 	override void OnPlayerLoaded(){
 		if(GetGame().IsClient()){
 			KapModTriggerCallback kap_cta = new KapModTriggerCallback;
@@ -93,36 +99,44 @@ modded class PlayerBase extends ManBase{
 		override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
 		{
 			// dont forget to propagate this call trough class hierarchy!
-			Debug.Log("[DEBUD_LOG] KapMod_RPC");
-			#ifdef SERVER
-							Param2<string, string> p = new Param2<string, string>("","");
-							array<Man> players = new array<Man>();
-							GetGame().GetPlayers(players);
-							PlayerBase player;
-								if (ctx.Read(p))
+			
+			super.OnRPC(sender, rpc_type, ctx);
+			Param2<string, string> p = new Param2<string, string>("","");
+			array<Man> players = new array<Man>();
+			GetGame().GetPlayers(players);
+			PlayerBase player;
+			if (ctx.Read(p))
 					{
+				
 				for(int k = 0; k < players.Count(); k++){
 								if(players.Get(k).GetIdentity().GetId() == p.param2){
 					switch(rpc_type)
 					{
 						case KapMod.KAP_REMOTE_ADD_INVENTORY:
 						{
-											player = PlayerBase.Cast(players.Get(k));
-											player.GetInventory().CreateInInventory(p.param1);
+							#ifdef SERVER
+								player = PlayerBase.Cast(players.Get(k));
+								player.GetInventory().CreateInInventory(p.param1);
+								Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_ADD_INVENTORY");
+							#endif
 						break;
 						}
 						case KapMod.KAP_REMOTE_ADD_NEAR:
 						{				
+							#ifdef SERVER
 										string spawned = p.param1;
 										spawned.Replace("spawn ", "");
 										Print("NEAR: " + spawned);
 											player = PlayerBase.Cast(players.Get(k));
 											
 											GetGame().CreateObject(spawned, player.GetPosition());
+										Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_ADD_NEAR");
+							#endif
 						break;
 						}
 						case KapMod.KAP_REMOTE_TELEPORT_CHAT:
 						{					
+							#ifdef SERVER
 										string str = p.param1;
 										TStringArray teleport_pos = new TStringArray;
 										str.Replace("tp ","");
@@ -134,10 +148,13 @@ modded class PlayerBase extends ManBase{
 										float posY = teleport_pos[1].ToFloat();
 										float posZ = GetGame().SurfaceY(posX, posY) + 0.1;
 											players.Get(k).SetPosition(Vector(posX, posZ, posY));
+							Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_TELEPORT_CHAT");
+							#endif
 						break;
 						}
 						case KapMod.KAP_REMOTE_TELEPORT:
 						{					
+							#ifdef SERVER
 										string str1 = p.param1;
 										TStringArray coord_pos = new TStringArray;
 										str1.Replace(" ","");
@@ -151,12 +168,13 @@ modded class PlayerBase extends ManBase{
 										//PlayerBase.Cast(players.Get(k)).m_ShockHandler.SetShock(65);
 										DayZPlayerSyncJunctures.SendPlayerUnconsciousness(DayZPlayer.Cast(players.Get(k)), true);
 										GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(PlayerBase.Cast(players.Get(k)).stop_unka, 3000, false, players.Get(k));
-										
-										
+							Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_TELEPORT");
+							#endif	
 						break;
 						}
 						case KapMod.KAP_REMOTE_HEAL:
 						{
+							#ifdef SERVER
 								PlayerBase.Cast(players.Get(k)).SetHealth(100);
 								PlayerBase.Cast(players.Get(k)).GetStatWater().Set(900);
 								PlayerBase.Cast(players.Get(k)).GetStatEnergy().Set(900);
@@ -165,17 +183,33 @@ modded class PlayerBase extends ManBase{
 								}
 								PlayerBase.Cast(players.Get(k)).SetHealth("", "Blood", PlayerBase.Cast(players.Get(k)).GetMaxHealth("","Blood"));
 								players.Get(k).RemoveAllAgents();
+							Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_HEAL");
+							#endif
+						break;
+						}
+						case KapMod.KAP_REMOTE_GODMODE_EN:
+						{
+							#ifdef SERVER
+								players.Get(k).SetAllowDamage(false);
+								Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_GODMODE_EN");
+							#endif
+						break;
+						}
+						case KapMod.KAP_REMOTE_GODMODE_DIS:
+						{
+							#ifdef SERVER
+								players.Get(k).SetAllowDamage(true);
+								Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_GODMODE_DIS");
+							#endif
 						break;
 						}
 						};
 					};
 				};
 			};
-			#endif
-			super.OnRPC(sender, rpc_type, ctx);
 		}
 };
 
 
-//void main(){
-//};
+void main(){
+};
