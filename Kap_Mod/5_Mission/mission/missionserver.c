@@ -1,4 +1,5 @@
 // Script File
+/*
 modded class MissionServer extends MissionBase{
 	void DelayedTriggerCreate(){
 		Print("CURR_TICKs: " + GetGame().GetTickTime());		
@@ -7,9 +8,10 @@ modded class MissionServer extends MissionBase{
 		RestContext ctx = GetRestApi().GetRestContext("https://kapayji.tech/dayz/teleport/trigger-coords");
 		ctx.GET(kap_cta,"/");
 	}
-	override void OnMissionStart()
+	override void OnInit()
 	{
-		super.OnMissionStart();
-		GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(DelayedTriggerCreate, 60000, false);
+		super.OnInit();
+		GetGame().GetCallQueue(CALL_CATEGORY_SYSTEM).CallLater(DelayedTriggerCreate, 60000, false);
 	}
 }
+*/
