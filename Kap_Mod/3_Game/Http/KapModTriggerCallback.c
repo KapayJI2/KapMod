@@ -28,12 +28,15 @@ class KapModTriggerCallback: RestCallback {
 				if(GetGame().IsClient()){
 					ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_FIRE, v, true);
 					ParticleSource.CreateParticle(ParticleList.CAMP_NORMAL_SMOKE, v, true);
+					SEffectManager.PlaySound( "kapTriggerSoundStatic_SoundSet", v, 0, 0, true);
+					SEffectManager.PlaySound( "kapTriggerCloseRadiusSound_SoundSet", v ,0 ,0 ,true);
 					Print("[Kap_Mod] Created particle num: " + i + ", on pos: " + v);
 					Debug.Log("[Kap_Mod] Created particle num: " + i + ", on pos: " + v);
 				}
 				#ifdef SERVER
 					GetGame().CreateObjectEx("KapTrigger", v, ECE_SETUP);
 					GetGame().CreateObjectEx("KapTriggerWrapper", v, ECE_SETUP);
+					GetGame().CreateObjectEx("KapTriggerWrapperFar", v, ECE_SETUP);
 					Print("[Kap_Mod] Created trigger num: " + i +", on pos: " + v);
 					Debug.Log("[Kap_Mod] Created trigger num: " + i +", on pos: " + v);
 				

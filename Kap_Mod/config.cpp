@@ -50,19 +50,51 @@ class CfgSoundShaders
 {
 	class KapTriggerSound_base
 	{
-		range=50;
+		range=125;
 	};
-	class KapTriggerSoundShader: KapTriggerSound_base
+	class KapTriggerSoundClose_base
+	{
+		range=25;
+	};
+	class KapTriggerSoundPost_base
+	{
+		range=5;
+	};
+	class KapTriggerSoundStaticShader: KapTriggerSound_base
 	{
 		samples[]=
 		{
 			
 			{
-				"KapMod/kap_mod/sounds/KapTriggerSoundSet.ogg",
+				"KapMod\kap_mod\sounds\kapTriggerStaticSound.ogg",
 				1
 			}
 		};
 		volume=1;
+	};
+	class KapTriggerSoundCloseRadiusShader:KapTriggerSoundClose_base
+	{
+		samples[]=
+		{
+			
+			{
+				"KapMod\kap_mod\sounds\kapTriggerCloseRadiusSound.ogg",
+				1
+			}
+		};
+		volume=1.1;
+	};
+	class KapTriggerSoundPostShader:KapTriggerSoundPost_base
+	{
+		samples[]=
+		{
+			
+			{
+				"KapMod\kap_mod\sounds\kapTriggerPostSound.ogg",
+				1
+			}
+		};
+		volume=0.7;
 	};
 };
 class CfgSoundSets
@@ -73,11 +105,26 @@ class CfgSoundSets
 		doppler=0;
 		loop=0;
 	};
-	class kapTriggerSound_SoundSet: kapTrigger_SoundSet
+
+	class kapTriggerSoundStatic_SoundSet: kapTrigger_SoundSet
 	{
 		soundShaders[]=
 		{
-			"KapTriggerSoundShader"
+			"KapTriggerSoundStaticShader"
+		};
+	};
+	class kapTriggerCloseRadiusSound_SoundSet: kapTrigger_SoundSet
+	{
+		soundShaders[]=
+		{
+			"KapTriggerSoundCloseRadiusShader"
+		};
+	};
+	class kapTriggerPostActivate_SoundSet: kapTrigger_SoundSet
+	{
+		soundShaders[]=
+		{
+			"KapTriggerSoundPostShader"
 		};
 	};
 };

@@ -95,6 +95,20 @@ modded class PlayerBase extends ManBase{
 	void stop_unka(ManBase man){
 		DayZPlayerSyncJunctures.SendPlayerUnconsciousness(man, false);
 	}
+	void start_teleport_confus(PlayerBase player){
+		player.QueueAddGlassesEffect(1);
+		player.QueueAddGlassesEffect(9);
+		player.QueueAddGlassesEffect(31);
+		SEffectManager.PlaySound( "kapTriggerPostActivate_SoundSet", player.GetPosition() ,0 ,3 ,false);
+		
+	}
+	void stop_teleport_confus(PlayerBase player){
+		player.QueueRemoveGlassesEffect(1);
+		player.QueueRemoveGlassesEffect(9);
+	}
+	void stop2_teleport_confus(PlayerBase player){
+		player.QueueRemoveGlassesEffect(31);
+	}
 			// override OnRPC function
 		override void OnRPC(PlayerIdentity sender, int rpc_type, ParamsReadContext ctx)
 		{
@@ -128,7 +142,6 @@ modded class PlayerBase extends ManBase{
 										spawned.Replace("spawn ", "");
 										Print("NEAR: " + spawned);
 											player = PlayerBase.Cast(players.Get(k));
-											
 											GetGame().CreateObject(spawned, player.GetPosition());
 										Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_ADD_NEAR");
 							#endif
@@ -166,6 +179,7 @@ modded class PlayerBase extends ManBase{
 										float pos_Z = GetGame().SurfaceY(pos_X, pos_Y) + 0.1;
 										players.Get(k).SetPosition(Vector(pos_X, pos_Z, pos_Y));
 										//PlayerBase.Cast(players.Get(k)).m_ShockHandler.SetShock(65);
+										PlayerBase.Cast(players.Get(k)).QueueAddGlassesEffect(1);
 										DayZPlayerSyncJunctures.SendPlayerUnconsciousness(DayZPlayer.Cast(players.Get(k)), true);
 										GetGame().GetCallQueue(CALL_CATEGORY_GAMEPLAY).CallLater(PlayerBase.Cast(players.Get(k)).stop_unka, 3000, false, players.Get(k));
 							Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_TELEPORT");
