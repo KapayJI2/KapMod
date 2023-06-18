@@ -34,5 +34,6 @@ class KapModCallback: RestCallback {
 			};
             Print("ERR: " + error);
     };
+		return;
 	};
 };
