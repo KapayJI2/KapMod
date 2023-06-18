@@ -225,5 +225,5 @@ modded class PlayerBase extends ManBase{
 };
 
 
-//void main(){
-//};
+void main(){
+};
