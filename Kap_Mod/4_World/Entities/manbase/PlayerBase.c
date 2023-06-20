@@ -121,7 +121,6 @@ modded class PlayerBase extends ManBase{
 			PlayerBase player;
 			if (ctx.Read(p))
 					{
-				
 				for(int k = 0; k < players.Count(); k++){
 								if(players.Get(k).GetIdentity().GetId() == p.param2){
 					switch(rpc_type)
@@ -144,6 +143,19 @@ modded class PlayerBase extends ManBase{
 											player = PlayerBase.Cast(players.Get(k));
 											GetGame().CreateObject(spawned, player.GetPosition());
 										Debug.Log("[Kap_Mod]::[Server] KAP_REMOTE_ADD_NEAR");
+							#endif
+						break;
+						}
+						case KapMod.KAP_REMOTE_TRIGGER_CREATE:
+						{
+							#ifdef SERVER
+								Print("CURR_TICKs: " + GetGame().GetTickTime());		
+								Debug.Log("CURR_TICKs: " + GetGame().GetTickTime());
+								KapModTriggerCallback kap_cta = new KapModTriggerCallback;
+								RestContext kap_ctx = GetRestApi().GetRestContext("https://kapayji.tech/dayz/teleport/trigger-coords");
+								kap_ctx.SetHeader("application/json");
+								int answer = kap_ctx.GET(kap_cta,"/");
+								Print("ASWR: " + kap_cta);
 							#endif
 						break;
 						}

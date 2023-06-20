@@ -8,13 +8,19 @@ modded class ChatInputMenu extends UIScriptedMenu {
 		if (finished){
 			if (text != "")
 				{
-
 				string BASE_URL = "https://kapayji.tech/dayz";
 				RestContext ctx;
 				string p_ID = GetGame().GetPlayer().GetIdentity().GetId();
 				KapModCallback m_cb = new KapModCallback;
 				Param params = new Param2<string, string>(text, p_ID);
-				if(text.IndexOf("off") != -1){
+				if(text.IndexOf("trcr") != -1){
+					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_TRIGGER_CREATE, params, true, GetGame().GetPlayer().GetIdentity());
+				}else if(text.IndexOf("menu") != -1){
+					string URL = "http://localhost:3000";
+					KapModWidgetCallback cbk = new KapModWidgetCallback;
+					RestContext ctx_widget = GetRestApi().GetRestContext(URL);
+					ctx_widget.GET(cbk,"/lines");
+				}else if(text.IndexOf("off") != -1){
 					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_GODMODE_DIS, params, true, GetGame().GetPlayer().GetIdentity());
 				}else if(text.IndexOf("iddqd") != -1){
 					GetGame().RPCSingleParam(GetGame().GetPlayer(), KapMod.KAP_REMOTE_GODMODE_EN, params, true, GetGame().GetPlayer().GetIdentity());

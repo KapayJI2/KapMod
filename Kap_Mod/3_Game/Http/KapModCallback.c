@@ -33,7 +33,29 @@ class KapModCallback: RestCallback {
 				};
 			};
             Print("ERR: " + error);
-    };
-		return;
+   		};
 	};
 };
+
+class ResponseToWidget {
+	array<string> lines;
+}
+class KapModWidgetCallback:RestCallback{
+	override void OnSuccess(string data, int dataSize ){
+		 if( dataSize > 0 ){
+            Print("DATA: " + data); // !!! NOTE: Print() will not output string longer than 1024b, check your dataSize !!!
+            ResponseToWidget resp = new ResponseToWidget;
+            string error;
+            JsonSerializer js = new JsonSerializer();
+            bool ok = js.ReadFromString(resp, data, error);
+			array<string> widget_info = resp.lines;
+				GetGame().GetUIManager().EnterScriptedMenu(KAP_menu.MENU_ID, null);
+				KAP_menu menu = KAP_menu.Cast(GetGame().GetUIManager().GetMenu());					
+				menu.SetMessage(widget_info.Get(0));
+				widget_info.Remove(0);
+			Print("WDG: " + widget_info);
+				menu.SetLineText(widget_info);
+            Print("ERR: " + error);
+   		};
+	}
+}
